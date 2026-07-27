@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="ChatLens - Privacy-First, Local WhatsApp Chat & Media Analyzer. Visualize stats, chat history, timeline, media gallery, and insights offline.">
+  <meta name="theme-color" content="#0a0a0f">
+  <title>ChatLens — WhatsApp Chat & Media Analytics Dashboard</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
+  <!-- CDN Libraries -->
+  <!-- JSZip for ZIP extraction -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <!-- ECharts for rich analytics charts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.1/echarts.min.js"></script>
+  <!-- Day.js for date manipulation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.13/dayjs.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.13/plugin/customParseFormat.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/dayjs/1.11.13/plugin/relativeTime.min.js"></script>
+  <!-- Fuse.js for fuzzy client-side search -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/7.0.0/fuse.min.js"></script>
+
+  <!-- Application CSS Design System -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/upload.css">
+  <link rel="stylesheet" href="css/chat.css">
+  <link rel="stylesheet" href="css/analytics.css">
+  <link rel="stylesheet" href="css/media.css">
+  <link rel="stylesheet" href="css/timeline.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+
+<body>
+  <!-- App Container -->
+  <div class="app">
+
+    <!-- Toast Notifications Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Sidebar Navigation -->
+    <aside id="sidebar" class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="sidebar-logo-icon">🔍</div>
+          <span class="sidebar-logo-text">ChatLens</span>
+        </div>
+        <button id="sidebar-toggle" class="sidebar-toggle-btn" aria-label="Toggle Sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15,18 9,12 15,6" />
+          </svg>
+        </button>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-title">MAIN</div>
+        <a href="#" class="nav-item active" data-view="upload" id="nav-upload">
+          <span class="nav-icon">📁</span>
+          <span class="nav-label">Upload Chat</span>
+        </a>
+        <a href="#" class="nav-item disabled" data-view="analytics" id="nav-analytics">
+          <span class="nav-icon">📊</span>
+          <span class="nav-label">Analytics</span>
+        </a>
+        <a href="#" class="nav-item disabled" data-view="chat" id="nav-chat">
+          <span class="nav-icon">💬</span>
+          <span class="nav-label">Chat View</span>
+        </a>
+        <a href="#" class="nav-item disabled" data-view="media" id="nav-media">
+          <span class="nav-icon">🖼️</span>
+          <span class="nav-label">Media Gallery</span>
+        </a>
+        <a href="#" class="nav-item disabled" data-view="timeline" id="nav-timeline">
+          <span class="nav-icon">📆</span>
+          <span class="nav-label">Timeline</span>
+        </a>
+        <a href="#" class="nav-item disabled" data-view="search" id="nav-search">
+          <span class="nav-icon">🔎</span>
+          <span class="nav-label">Search</span>
+        </a>
+
+        <div class="nav-section-title">SYSTEM</div>
+        <a href="#" class="nav-item" data-view="settings" id="nav-settings">
+          <span class="nav-icon">⚙️</span>
+          <span class="nav-label">Settings</span>
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <div class="privacy-badge">
+          <span class="privacy-icon">🔒</span>
+          <span class="privacy-text">100% Offline & Private</span>
+        </div>
+        <a href="https://ardevlopers.github.io/ardeveloper25" target="_blank" rel="noopener noreferrer"
+          class="developer-credit-link">
+          <span>Crafted by</span> <strong>AR Developer ⚡</strong>
+        </a>
+      </div>
+    </aside>
+
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+
+      <!-- Top Navigation Bar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button id="menu-toggle" class="topbar-menu-btn" aria-label="Open Menu">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
+          <h1 id="topbar-title" class="topbar-title">Upload Chat</h1>
+          <span id="chat-name" class="topbar-chat-name">ChatLens</span>
+        </div>
+
+        <div class="topbar-center">
+          <div id="topbar-quick-stats" class="topbar-quick-stats" style="display:none"></div>
+        </div>
+
+        <div class="topbar-right">
+          <div class="topbar-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input type="text" id="global-search-input" placeholder="Quick search..." aria-label="Quick search">
+          </div>
+
+          <button id="filter-toggle" class="topbar-btn" aria-label="Filters">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+            </svg>
+            <span id="filter-badge" class="badge badge--accent" hidden>0</span>
+          </button>
+
+          <button id="theme-toggle" class="topbar-btn" aria-label="Toggle Theme">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="5" />
+              <line x1="12" y1="1" x2="12" y2="3" />
+              <line x1="12" y1="21" x2="12" y2="23" />
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+              <line x1="1" y1="12" x2="3" y2="12" />
+              <line x1="21" y1="12" x2="23" y2="12" />
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              style="display:none">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+          </button>
+
+          <button id="export-btn" class="btn btn--primary btn--sm">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+              <polyline points="7 10 12 15 17 10" />
+              <line x1="12" y1="15" x2="12" y2="3" />
+            </svg>
+            Export
+          </button>
+        </div>
+      </header>
+
+      <!-- Main Content Area -->
+      <main class="content">
+
+        <!-- VIEW 1: UPLOAD -->
+        <section id="view-upload" class="view active">
+          <div class="upload-bg">
+            <div class="blob blob-1"></div>
+            <div class="blob blob-2"></div>
+            <div class="blob blob-3"></div>
+          </div>
+
+          <div class="upload-container">
+            <div class="upload-hero">
+              <h2 class="upload-title">Analyze Your WhatsApp Chats</h2>
+              <p class="upload-subtitle">~ Powerd by AR Developer 25 <br><br>Deep analytics, privacy-first processing,
+                interactive charts, and rich media exploration — 100% inside your browser.</p>
+            </div>
+
+            <div id="upload-zone" class="upload-zone">
+              <div class="upload-zone-content">
+                <div class="upload-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                </div>
+                <h3>Drag & Drop Export File or Folder</h3>
+                <p>Upload your WhatsApp <strong>ZIP file</strong>, extracted folder, or <strong>.txt</strong> file</p>
+                <div class="upload-or">OR</div>
+                <div class="flex gap-md">
+                  <button class="btn btn--primary"
+                    onclick="document.getElementById('file-input').click(); event.stopPropagation();">Browse
+                    File</button>
+                  <button class="btn btn--secondary"
+                    onclick="document.getElementById('folder-input').click(); event.stopPropagation();">Select
+                    Folder</button>
+                </div>
+                <input type="file" id="file-input" accept=".zip,.txt" hidden>
+                <input type="file" id="folder-input" webkitdirectory directory hidden>
+                <div class="upload-formats">
+                  <span class="format-badge">.ZIP (with Media)</span>
+                  <span class="format-badge">.TXT (Chat Only)</span>
+                  <span class="format-badge">Extracted Folder</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Upload Progress Indicator -->
+            <div id="upload-progress" class="upload-progress" hidden>
+              <div class="progress-bar">
+                <div id="progress-fill" class="progress-fill"></div>
+              </div>
+              <div id="progress-text" class="progress-text">Processing chat export...</div>
+            </div>
+
+            <div class="upload-features">
+              <div class="feature-card">
+                <div class="feature-card-icon">🔒</div>
+                <h4>100% Private</h4>
+                <p>All processing is client-side. Zero server calls, zero data collection.</p>
+              </div>
+              <div class="feature-card">
+                <div class="feature-card-icon">📊</div>
+                <h4>Deep Analytics</h4>
+                <p>Discover message frequency, peak hours, top emojis, sentiment, and word clouds.</p>
+              </div>
+              <div class="feature-card">
+                <div class="feature-card-icon">🖼️</div>
+                <h4>Media Gallery</h4>
+                <p>Browse photos, videos, voice notes, and documents in a unified layout.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- VIEW 2: ANALYTICS DASHBOARD -->
+        <section id="view-analytics" class="view" hidden>
+          <div class="analytics-container">
+            <div class="view-filter-bar">
+              <div class="view-filter-group">
+                <span class="filter-bar-title">📊 Analytics Filter:</span>
+                <select id="analytics-sender-filter" class="form-select form-select--sm">
+                  <option value="">All Senders</option>
+                </select>
+                <select id="analytics-year-filter" class="form-select form-select--sm">
+                  <option value="">All Years</option>
+                </select>
+              </div>
+              <button class="btn btn--sm btn--glass open-filter-panel-btn">⚙️ All Filters</button>
+            </div>
+            <div id="stats-cards" class="stats-cards-row"></div>
+            <div id="analytics-sections"></div>
+          </div>
+        </section>
+
+        <!-- VIEW 3: CHAT VIEW -->
+        <section id="view-chat" class="view" hidden>
+          <div class="chat-container">
+            <div class="chat-filter-bar">
+              <div class="chat-filter-chips">
+                <button class="chat-filter-chip active" data-filter="all">All</button>
+                <button class="chat-filter-chip" data-filter="text">💬 Text</button>
+                <button class="chat-filter-chip" data-filter="media">🖼️ Media</button>
+                <button class="chat-filter-chip" data-filter="links">🔗 Links</button>
+                <button class="chat-filter-chip" data-filter="docs">📄 Docs</button>
+                <button class="chat-filter-chip" data-filter="deleted">🗑️ Deleted</button>
+              </div>
+              <div class="chat-filter-selects">
+                <select id="chat-sender-filter" class="form-select form-select--sm">
+                  <option value="">All Senders</option>
+                </select>
+                <button class="btn btn--sm btn--glass open-filter-panel-btn">⚙️ Filters</button>
+              </div>
+            </div>
+            <div id="chat-messages" class="chat-messages"></div>
+            <button id="scroll-bottom" class="scroll-bottom-btn" aria-label="Scroll to bottom" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+          </div>
+        </section>
+
+        <!-- VIEW 4: MEDIA GALLERY -->
+        <section id="view-media" class="view" hidden>
+          <div class="media-container">
+            <div class="media-toolbar">
+              <div class="media-tabs">
+                <button class="media-tab active" data-type="all">All Media</button>
+                <button class="media-tab" data-type="images">🖼️ Images</button>
+                <button class="media-tab" data-type="videos">🎥 Videos</button>
+                <button class="media-tab" data-type="audio">🎵 Voice & Audio</button>
+                <button class="media-tab" data-type="documents">📄 Documents</button>
+              </div>
+              <div class="media-controls">
+                <div class="media-actions">
+                  <button id="media-select-all" class="btn btn--sm btn--secondary">Select All</button>
+                  <button id="media-deselect-all" class="btn btn--sm btn--secondary" style="display:none;">Deselect
+                    All</button>
+                  <button id="media-download-selected" class="btn btn--sm btn--primary" disabled>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                      style="width:14px;height:14px;display:inline-block;vertical-align:middle;margin-right:4px;">
+                      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    Download Selected (<span id="media-selected-count">0</span>)
+                  </button>
+                </div>
+                <select id="media-sort-select" class="form-select">
+                  <option value="newest">Newest First</option>
+                  <option value="oldest">Oldest First</option>
+                  <option value="largest">Largest Size</option>
+                  <option value="smallest">Smallest Size</option>
+                </select>
+              </div>
+            </div>
+            <div id="media-grid" class="media-grid"></div>
+          </div>
+        </section>
+
+        <!-- VIEW 5: TIMELINE -->
+        <section id="view-timeline" class="view" hidden>
+          <div id="timeline-container" class="timeline-container"></div>
+        </section>
+
+        <!-- VIEW 6: SEARCH -->
+        <section id="view-search" class="view" hidden>
+          <div class="search-container">
+            <div class="search-header">
+              <input type="text" id="search-input" class="search-input"
+                placeholder="Search chat messages, senders, links, media...">
+              <span id="search-count" class="search-count"></span>
+            </div>
+            <div id="search-results" class="search-results"></div>
+          </div>
+        </section>
+
+        <!-- VIEW 7: SETTINGS -->
+        <section id="view-settings" class="view" hidden>
+          <div class="settings-container">
+            <h2 class="settings-title">Settings & Preferences</h2>
+
+            <div class="settings-section">
+              <h3>🎨 Theme Settings</h3>
+              <div class="theme-options">
+                <button class="theme-option active" data-theme="dark">
+                  <span class="theme-preview theme-preview--dark"></span>
+                  <span>Dark Mode (Default)</span>
+                </button>
+                <button class="theme-option" data-theme="light">
+                  <span class="theme-preview theme-preview--light"></span>
+                  <span>Light Mode</span>
+                </button>
+                <button class="theme-option" data-theme="auto">
+                  <span class="theme-preview theme-preview--auto"></span>
+                  <span>System Preference</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3>🔒 Privacy & Local Storage</h3>
+              <p class="text-secondary mb-md">ChatLens processes 100% of data locally on your device. No data is stored
+                on remote servers.</p>
+              <div class="flex gap-md">
+                <button class="btn btn--danger" onclick="WCA.App.reset()">Reset & Clear Current Session</button>
+              </div>
+            </div>
+
+            <div class="settings-section">
+              <h3>📤 Export Reports</h3>
+              <p class="text-secondary mb-md">Export analytics and structured message data in various formats.</p>
+              <div class="export-grid">
+                <button id="export-pdf" class="btn btn--secondary">📄 Export PDF Report</button>
+                <button id="export-html" class="btn btn--secondary">🌐 Export Interactive HTML</button>
+                <button id="export-json" class="btn btn--secondary">📦 Export JSON Data</button>
+                <button id="export-csv" class="btn btn--secondary">📊 Export CSV Table</button>
+              </div>
+            </div>
+
+            <!-- AR Developer Studio Branding Section -->
+            <div class="settings-section dev-branding-card">
+              <div class="dev-header">
+                <div class="dev-logo-box">⚡</div>
+                <div class="dev-header-text">
+                  <h3>AR Developer</h3>
+                  <p>Mobile Apps, Websites & Custom Software Studio</p>
+                </div>
+              </div>
+              <p class="dev-description">
+                Engineering Superior Digital Solutions for Global Visionaries. Specializing in Flutter, Laravel, Cloud
+                Architecture, and High-Scale Web Systems.
+              </p>
+              <div class="dev-links-row">
+                <a href="https://ardevlopers.github.io/ardeveloper25" target="_blank" rel="noopener noreferrer"
+                  class="btn btn--sm btn--primary">🌐 Official Website</a>
+                <a href="https://g.dev/ardeveloper25" target="_blank" rel="noopener noreferrer"
+                  class="btn btn--sm btn--glass">Google Dev Profile</a>
+                <a href="https://github.com/ardeveloper" target="_blank" rel="noopener noreferrer"
+                  class="btn btn--sm btn--glass">GitHub</a>
+                <a href="https://www.linkedin.com/in/ar-devlopers-845097423" target="_blank" rel="noopener noreferrer"
+                  class="btn btn--sm btn--glass">LinkedIn</a>
+                <a href="https://instagram.com/ardeveloper25" target="_blank" rel="noopener noreferrer"
+                  class="btn btn--sm btn--glass">Instagram</a>
+                <a href="https://youtube.com/@ardeveloper25" target="_blank" rel="noopener noreferrer"
+                  class="btn btn--sm btn--glass">YouTube</a>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+
+    <!-- Mobile Bottom Navigation Bar -->
+    <nav class="mobile-nav-bar" id="mobile-nav-bar">
+      <a href="#" class="mobile-nav-item active" data-view="upload">
+        <span class="mobile-nav-icon">📁</span>
+        <span class="mobile-nav-label">Upload</span>
+      </a>
+      <a href="#" class="mobile-nav-item disabled" data-view="analytics">
+        <span class="mobile-nav-icon">📊</span>
+        <span class="mobile-nav-label">Analytics</span>
+      </a>
+      <a href="#" class="mobile-nav-item disabled" data-view="chat">
+        <span class="mobile-nav-icon">💬</span>
+        <span class="mobile-nav-label">Chat</span>
+      </a>
+      <a href="#" class="mobile-nav-item disabled" data-view="media">
+        <span class="mobile-nav-icon">🖼️</span>
+        <span class="mobile-nav-label">Media</span>
+      </a>
+      <a href="#" class="mobile-nav-item" data-view="settings">
+        <span class="mobile-nav-icon">⚙️</span>
+        <span class="mobile-nav-label">Settings</span>
+      </a>
+    </nav>
+
+    <!-- Filter Slide-Out Panel -->
+    <aside id="filter-panel" class="filter-panel">
+      <div class="filter-panel-header">
+        <h3>Filter Messages</h3>
+        <button id="filter-close" class="btn-icon">✕</button>
+      </div>
+      <div id="filter-panel-body" class="filter-panel-body"></div>
+      <div class="filter-panel-footer">
+        <button id="filter-clear" class="btn btn--secondary">Reset All</button>
+        <button id="filter-apply" class="btn btn--primary">Apply Filters</button>
+      </div>
+    </aside>
+    <div id="filter-overlay" class="filter-overlay"></div>
+
+    <!-- Lightbox Modal for Images and Videos -->
+    <div id="lightbox" class="lightbox" style="display: none;">
+      <div class="lightbox-overlay"></div>
+      <div class="lightbox-content">
+        <button id="lightbox-download" class="lightbox-download" aria-label="Download" title="Download File">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+            <polyline points="7 10 12 15 17 10" />
+            <line x1="12" y1="15" x2="12" y2="3" />
+          </svg>
+        </button>
+        <button id="lightbox-close" class="lightbox-close" aria-label="Close" title="Close">✕</button>
+        <button id="lightbox-prev" class="lightbox-prev" aria-label="Previous">❮</button>
+        <button id="lightbox-next" class="lightbox-next" aria-label="Next">❯</button>
+        <div id="lightbox-media" class="lightbox-media"></div>
+        <div id="lightbox-info" class="lightbox-info"></div>
+      </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div id="export-modal" class="modal" style="display: none;">
+      <div class="modal-overlay"></div>
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Export Analytics & Chat Data</h3>
+          <button id="export-modal-close" class="btn-icon">✕</button>
+        </div>
+        <div class="modal-body">
+          <p class="text-secondary mb-lg">Choose an export format for your WhatsApp analysis report:</p>
+          <div class="export-options">
+            <div class="export-option-card" data-format="pdf">
+              <span class="export-icon">📄</span>
+              <div class="export-details">
+                <strong>PDF Document</strong>
+                <span>Formatted printable summary with charts</span>
+              </div>
+            </div>
+            <div class="export-option-card" data-format="html">
+              <span class="export-icon">🌐</span>
+              <div class="export-details">
+                <strong>Interactive HTML</strong>
+                <span>Standalone offline web report</span>
+              </div>
+            </div>
+            <div class="export-option-card" data-format="json">
+              <span class="export-icon">📦</span>
+              <div class="export-details">
+                <strong>Structured JSON</strong>
+                <span>Complete parsed metadata and stats</span>
+              </div>
+            </div>
+            <div class="export-option-card" data-format="csv">
+              <span class="export-icon">📊</span>
+              <div class="export-details">
+                <strong>CSV Spreadsheet</strong>
+                <span>Table format for Excel / Sheets</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Format Selection Modal (For unknown formats) -->
+    <div id="format-modal" class="modal" style="display: none;">
+      <div class="modal-overlay"></div>
+      <div class="modal-card">
+        <div class="modal-header">
+          <h3>Select Date Format</h3>
+        </div>
+        <div class="modal-body">
+          <p class="text-secondary mb-md">Could not automatically detect the timestamp format. Please choose your
+            export's date format:</p>
+          <div class="format-preview mb-lg"></div>
+          <div class="form-group mb-lg">
+            <label for="format-date-select">Date Format</label>
+            <select id="format-date-select" class="form-select">
+              <option value="DMY">Day/Month/Year (DD/MM/YYYY) - e.g. 29/02/2024</option>
+              <option value="MDY">Month/Day/Year (MM/DD/YYYY) - e.g. 02/29/2024</option>
+              <option value="YMD">Year-Month-Day (YYYY-MM-DD) - e.g. 2024-02-29</option>
+            </select>
+          </div>
+          <button id="format-confirm" class="btn btn--primary btn--full">Confirm Format & Process</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Application Scripts -->
+   
+  <script src="js/utils/constants.js"></script>
+  <script src="js/utils/stopWords.js"></script>
+  <script src="js/utils/emojiUtils.js"></script>
+  <script src="js/utils/formatters.js"></script>
+  <script src="js/utils/dateUtils.js"></script>
+
+  <script src="js/core/store.js"></script>
+  <script src="js/core/themes.js"></script>
+  <script src="js/core/filters.js"></script>
+  <script src="js/core/search.js"></script>
+
+  <script src="js/parser/chatParser.js"></script>
+  <script src="js/parser/zipHandler.js"></script>
+  <script src="js/parser/mediaMapper.js"></script>
+
+  <script src="js/components/toast.js"></script>
+  <script src="js/components/chartFactory.js"></script>
+  <script src="js/components/virtualScroll.js"></script>
+  <script src="js/components/audioPlayer.js"></script>
+  <script src="js/components/lightbox.js"></script>
+  <script src="js/components/sidebar.js"></script>
+
+  <script src="js/views/uploadView.js"></script>
+  <script src="js/views/chatView.js"></script>
+  <script src="js/views/mediaView.js"></script>
+  <script src="js/views/analyticsView.js"></script>
+  <script src="js/views/otherViews.js"></script>
+
+  <script src="js/export/exporter.js"></script>
+  <script src="js/app.js"></script>
+</body>
+
+</html>

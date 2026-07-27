@@ -1,0 +1,440 @@
+/* ============================================================
+   ChatLens Fully Responsive Layout & Mobile Breakpoints
+   Smooth responsiveness for Mobile (320px - 480px),
+   Tablet (481px - 768px - 1024px), Desktop & Ultra-wide screens.
+   ============================================================ */
+
+/* ── Ultra-Wide & Large Desktop (1440px+) ─────────────────── */
+@media (min-width: 1440px) {
+  .analytics-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stats-cards-row {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+/* ── Laptop & Standard Desktop (1025px - 1439px) ───────────── */
+@media (max-width: 1439px) {
+  .stats-cards-row {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ── Tablet Landscape (769px - 1024px) ─────────────────────── */
+@media (max-width: 1024px) {
+  :root {
+    --sidebar-width: 220px;
+  }
+
+  .stats-cards-row {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+  }
+
+  .analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .upload-features {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+  }
+
+  .export-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sender-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fun-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Mobile & Tablet Portrait (Under 768px) ───────────────── */
+@media (max-width: 768px) {
+  /* Sidebar Drawer Overlay */
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 260px !important;
+    z-index: 1000;
+    transform: translateX(-100%);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    transition: transform 250ms ease;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar.collapsed {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.collapsed.open {
+    transform: translateX(0);
+  }
+
+  /* Main Wrapper expands to full viewport */
+  .main-wrapper {
+    margin-left: 0 !important;
+    width: 100vw;
+  }
+
+  /* Show mobile menu toggle icon */
+  .topbar-menu-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Overlay backdrop */
+  .sidebar-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 250ms ease, visibility 250ms ease;
+  }
+
+  .sidebar-overlay.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Topbar responsive adjustments */
+  .topbar {
+    padding: 0 12px;
+  }
+
+  .topbar-quick-stats {
+    display: none !important;
+  }
+
+  .topbar-search-wrapper {
+    max-width: 140px;
+  }
+
+  /* Stats cards: 2 columns */
+  .stats-cards-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  /* Content containers */
+  .analytics-container,
+  .media-container,
+  .timeline-container,
+  .search-container,
+  .settings-container {
+    padding: 12px;
+  }
+
+  /* Chat message bubble max width */
+  .chat-message {
+    max-width: 88%;
+  }
+
+  .chat-messages {
+    padding: 10px;
+  }
+
+  /* Filter bar horizontal scroll */
+  .chat-filter-bar,
+  .view-filter-bar {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+
+  .chat-filter-chips {
+    width: 100%;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .chat-filter-selects {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* Media Gallery Grid & Toolbar */
+  .media-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .media-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .media-controls {
+    width: 100%;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .media-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  .media-actions .btn {
+    font-size: 0.78rem;
+    padding: 4px 10px;
+    min-height: 34px;
+  }
+
+  /* Filter panel full width & sticky footer */
+  .filter-panel {
+    width: 100% !important;
+    z-index: 1200 !important;
+  }
+
+  .filter-panel-footer {
+    position: sticky;
+    bottom: 0;
+    z-index: 20;
+    background: var(--bg-secondary);
+    padding-bottom: calc(var(--space-md) + 60px) !important;
+    border-top: 1px solid var(--glass-border);
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
+  }
+
+  .response-time-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .fun-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ── Mobile Screens (Under 480px) ─────────────────────────── */
+@media (max-width: 480px) {
+  :root {
+    --topbar-height: 52px;
+  }
+
+  .topbar-title {
+    font-size: 0.95rem;
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .topbar-search-wrapper {
+    display: none; /* Hide global search in header on very small screens */
+  }
+
+  .stats-cards-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  .stat-card {
+    padding: 10px;
+  }
+
+  .stat-card__value {
+    font-size: 1.25rem;
+  }
+
+  .stat-card__icon {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+
+  .chart-container {
+    min-height: 240px;
+    height: 240px !important;
+  }
+
+  .upload-container {
+    padding: 16px 12px;
+  }
+
+  .upload-title {
+    font-size: 1.5rem;
+  }
+
+  .upload-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .upload-zone {
+    padding: 24px 12px;
+  }
+
+  .upload-features {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .export-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .media-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .timeline {
+    padding-left: 12px;
+  }
+
+  .timeline-card {
+    padding: 12px;
+  }
+
+  .fun-stats-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .response-time-cards {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  /* Modals full width */
+  .modal-content {
+    width: 95% !important;
+    max-width: 95% !important;
+    padding: 16px !important;
+  }
+}
+
+/* ── Small Mobile Screens (Under 360px) ────────────────────── */
+@media (max-width: 360px) {
+  .upload-title {
+    font-size: 1.35rem;
+  }
+
+  .stats-cards-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .btn--lg {
+    min-height: 38px;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+/* ── Print Styles ────────────────────────────────────────── */
+@media print {
+  .sidebar,
+  .topbar,
+  .filter-panel,
+  .toast-container,
+  .lightbox,
+  .modal,
+  .btn,
+  .scroll-bottom-btn,
+  .chat-filter-bar,
+  .view-filter-bar {
+    display: none !important;
+  }
+
+  .main-wrapper {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  .content,
+  body,
+  .app {
+    overflow: visible !important;
+    height: auto !important;
+  }
+
+  .stat-card,
+  .chart-section,
+  .glass-card {
+    break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #ddd !important;
+  }
+}
+
+/* ── Mobile Bottom Navigation Bar ────────────────────────────── */
+.mobile-nav-bar {
+  display: none;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--glass-border);
+  z-index: 900;
+  align-items: center;
+  justify-content: space-around;
+  backdrop-filter: blur(10px);
+}
+
+@media (max-width: 768px) {
+  .mobile-nav-bar {
+    display: flex !important;
+  }
+  .content {
+    padding-bottom: 56px;
+  }
+}
+
+.mobile-nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 10px;
+  font-weight: 600;
+  gap: 2px;
+  transition: all 150ms ease;
+}
+
+.mobile-nav-item.active {
+  color: var(--accent-primary);
+}
+
+.mobile-nav-item.disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.mobile-nav-icon {
+  font-size: 18px;
+}
+
+/* ── Reduced Motion ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

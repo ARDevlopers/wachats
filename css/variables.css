@@ -1,0 +1,197 @@
+/* ============================================================
+   ChatLens Design Tokens
+   Premium design system with dark/light theme support
+   ============================================================ */
+
+:root {
+  /* ── Colors: Dark Theme (Default) ──────────────────────── */
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #111118;
+  --bg-tertiary: #1a1a2e;
+  --surface-1: rgba(255, 255, 255, 0.03);
+  --surface-2: rgba(255, 255, 255, 0.05);
+  --surface-3: rgba(255, 255, 255, 0.08);
+  --surface-hover: rgba(255, 255, 255, 0.1);
+
+  --text-primary: #f0f0f5;
+  --text-secondary: #a0a0b8;
+  --text-muted: #60607a;
+  --text-inverse: #0a0a0f;
+
+  /* Accent Colors */
+  --accent-primary: #6c5ce7;
+  --accent-primary-rgb: 108, 92, 231;
+  --accent-primary-hover: #7c6ff0;
+  --accent-secondary: #00cec9;
+  --accent-secondary-rgb: 0, 206, 201;
+  --accent-secondary-hover: #1de5e0;
+
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #6c5ce7, #a29bfe);
+  --gradient-secondary: linear-gradient(135deg, #00cec9, #55efc4);
+  --gradient-accent: linear-gradient(135deg, #6c5ce7, #00cec9);
+  --gradient-bg: linear-gradient(135deg, #0a0a0f 0%, #12121a 50%, #0a0a0f 100%);
+
+  /* Chat Bubble Colors */
+  --sender-1: #6c5ce7;
+  --sender-1-bg: rgba(108, 92, 231, 0.12);
+  --sender-1-border: rgba(108, 92, 231, 0.25);
+  --sender-2: #00cec9;
+  --sender-2-bg: rgba(0, 206, 201, 0.12);
+  --sender-2-border: rgba(0, 206, 201, 0.25);
+
+  /* Semantic Colors */
+  --success: #00b894;
+  --success-bg: rgba(0, 184, 148, 0.12);
+  --warning: #fdcb6e;
+  --warning-bg: rgba(253, 203, 110, 0.12);
+  --danger: #ff6b6b;
+  --danger-bg: rgba(255, 107, 107, 0.12);
+  --info: #74b9ff;
+  --info-bg: rgba(116, 185, 255, 0.12);
+
+  /* System Message */
+  --system-bg: rgba(255, 255, 255, 0.04);
+  --system-text: var(--text-muted);
+
+  /* ── Glassmorphism ─────────────────────────────────────── */
+  --glass-bg: rgba(255, 255, 255, 0.04);
+  --glass-bg-heavy: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(255, 255, 255, 0.15);
+  --glass-blur: 20px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+
+  /* ── Spacing Scale ─────────────────────────────────────── */
+  --space-2xs: 2px;
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
+  --space-3xl: 64px;
+  --space-4xl: 96px;
+
+  /* ── Border Radius ─────────────────────────────────────── */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-2xl: 32px;
+  --radius-full: 9999px;
+
+  /* ── Shadows ───────────────────────────────────────────── */
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.5);
+  --shadow-glow-sm: 0 0 12px rgba(108, 92, 231, 0.2);
+  --shadow-glow: 0 0 24px rgba(108, 92, 231, 0.3);
+  --shadow-glow-lg: 0 0 40px rgba(108, 92, 231, 0.4);
+  --shadow-glow-teal: 0 0 24px rgba(0, 206, 201, 0.3);
+
+  /* ── Typography ────────────────────────────────────────── */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+
+  --text-2xs: 0.625rem;  /* 10px */
+  --text-xs: 0.75rem;    /* 12px */
+  --text-sm: 0.875rem;   /* 14px */
+  --text-base: 1rem;     /* 16px */
+  --text-lg: 1.125rem;   /* 18px */
+  --text-xl: 1.25rem;    /* 20px */
+  --text-2xl: 1.5rem;    /* 24px */
+  --text-3xl: 2rem;      /* 32px */
+  --text-4xl: 2.5rem;    /* 40px */
+  --text-5xl: 3rem;      /* 48px */
+
+  --leading-tight: 1.2;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.8;
+
+  /* ── Transitions ───────────────────────────────────────── */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+  --transition-spring: 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  --transition-bounce: 600ms cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* ── Z-Index Stack ─────────────────────────────────────── */
+  --z-base: 1;
+  --z-dropdown: 50;
+  --z-sticky: 80;
+  --z-sidebar: 100;
+  --z-topbar: 200;
+  --z-overlay: 300;
+  --z-modal: 400;
+  --z-lightbox: 500;
+  --z-toast: 600;
+  --z-tooltip: 700;
+  --z-max: 9999;
+
+  /* ── Layout ────────────────────────────────────────────── */
+  --sidebar-width: 260px;
+  --sidebar-collapsed: 72px;
+  --topbar-height: 64px;
+  --filter-panel-width: 340px;
+  --content-max-width: 1400px;
+
+  /* ── Chart Colors ──────────────────────────────────────── */
+  --chart-1: #6c5ce7;
+  --chart-2: #00cec9;
+  --chart-3: #fd79a8;
+  --chart-4: #fdcb6e;
+  --chart-5: #00b894;
+  --chart-6: #e17055;
+  --chart-7: #74b9ff;
+  --chart-8: #a29bfe;
+  --chart-9: #55efc4;
+  --chart-10: #ff7675;
+}
+
+/* ── Light Theme ───────────────────────────────────────────── */
+[data-theme="light"] {
+  --bg-primary: #f0f2f7;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #e4e7ef;
+  --surface-1: rgba(0, 0, 0, 0.02);
+  --surface-2: rgba(0, 0, 0, 0.04);
+  --surface-3: rgba(0, 0, 0, 0.06);
+  --surface-hover: rgba(0, 0, 0, 0.08);
+
+  --text-primary: #1a1a2e;
+  --text-secondary: #5a5a7a;
+  --text-muted: #9a9ab0;
+  --text-inverse: #f0f0f5;
+
+  --accent-primary-hover: #5b4bd6;
+  --accent-secondary-hover: #00b8b3;
+
+  --sender-1-bg: rgba(108, 92, 231, 0.08);
+  --sender-1-border: rgba(108, 92, 231, 0.2);
+  --sender-2-bg: rgba(0, 206, 201, 0.08);
+  --sender-2-border: rgba(0, 206, 201, 0.2);
+
+  --system-bg: rgba(0, 0, 0, 0.03);
+
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-bg-heavy: rgba(255, 255, 255, 0.85);
+  --glass-border: rgba(0, 0, 0, 0.06);
+  --glass-border-hover: rgba(0, 0, 0, 0.12);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+
+  --gradient-bg: linear-gradient(135deg, #f0f2f7 0%, #e4e7ef 50%, #f0f2f7 100%);
+
+  --shadow-xs: 0 1px 3px rgba(0, 0, 0, 0.04);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 16px 48px rgba(0, 0, 0, 0.12);
+  --shadow-glow-sm: 0 0 12px rgba(108, 92, 231, 0.1);
+  --shadow-glow: 0 0 24px rgba(108, 92, 231, 0.15);
+  --shadow-glow-lg: 0 0 40px rgba(108, 92, 231, 0.2);
+  --shadow-glow-teal: 0 0 24px rgba(0, 206, 201, 0.15);
+}
