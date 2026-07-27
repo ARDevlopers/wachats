@@ -247,15 +247,78 @@
 .main-wrapper {
   flex: 1;
   margin-left: var(--sidebar-width);
+  margin-right: var(--ads-sidebar-width);
   display: flex;
   flex-direction: column;
   height: 100vh;
-  transition: margin-left var(--transition-base);
+  transition: margin-left var(--transition-base), margin-right var(--transition-base);
   overflow: hidden;
 }
 
 .sidebar.collapsed~.main-wrapper {
   margin-left: var(--sidebar-collapsed);
+}
+
+
+/* ── Ads Sidebar (All Time Screen) ────────────────────────── */
+.ads-sidebar {
+  width: var(--ads-sidebar-width);
+  height: 100vh;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--glass-border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: var(--space-md) var(--space-xs);
+  position: fixed;
+  right: 0;
+  top: 0;
+  z-index: var(--z-sidebar);
+  overflow-y: auto;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.ads-sidebar-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  width: 100%;
+}
+
+.ads-sidebar-tag {
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  background: var(--surface-2);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--glass-border);
+  white-space: nowrap;
+}
+
+.ads-frame-wrapper {
+  width: 160px;
+  min-width: 160px;
+  height: 600px;
+  min-height: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.ads-frame-wrapper iframe {
+  border: none !important;
+  max-width: 100%;
 }
 
 /* ── Topbar ──────────────────────────────────────────────── */
