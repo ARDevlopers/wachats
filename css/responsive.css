@@ -21,20 +21,6 @@
     grid-template-columns: repeat(4, 1fr);
   }
 }
-/* ── Medium / Small Screens (Under 1200px) ─────────────────── */
-@media (max-width: 1200px) {
-  :root {
-    --ads-sidebar-width: 0px;
-  }
-
-  .main-wrapper {
-    margin-right: 0 !important;
-  }
-
-  .ads-sidebar {
-    display: none !important;
-  }
-}
 
 /* ── Tablet Landscape (769px - 1024px) ─────────────────────── */
 @media (max-width: 1024px) {
